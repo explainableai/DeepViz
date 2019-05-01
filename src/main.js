@@ -1,16 +1,12 @@
-/**
- * Based on
- * https://github.com/fchollet/deep-learning-with-python-notebooks/blob/master/5.4-visualizing-what-convnets-learn.ipynb
+ /*
+ * Heatmap.js
  */
 
  import * as tf from "@tensorflow/tfjs";
  import {writeInternalActivationAndGetOutput} from "./filters";
  import * as utils from "./utils";
 
- import * as cam from "./cam";
- /**
- * Calcuate and update the maximally-activating input images for a covn2d layer.
- */
+ import * as heatmap from "./heatmap";
 
  const CONFIG = {
      layerNames: "block1_conv1,block2_conv1,block3_conv2,block4_conv2,block5_conv3",
@@ -19,7 +15,7 @@
      outputDir: "activation"
  }
 
-export async function internalActivations(model, inputTensor, activationsDiv) {
+async function internalActivations(model, inputTensor, activationsDiv) {
 
     const imageHeight = model.inputs[0].shape[1];
     const imageWidth = model.inputs[0].shape[2];
@@ -34,7 +30,7 @@ export async function internalActivations(model, inputTensor, activationsDiv) {
         model, layerNames, x, filters, outputDir, activationsDiv);
  }
 
- export async function ClassActivationMaps(model, inputTensor, indices, camDiv) {
+async function ClassActivationMaps(model, inputTensor, indices, camDiv) {
 
     // Compute the internal activations of the conv layers' outputs.
     const imageHeight = model.inputs[0].shape[1];
@@ -48,7 +44,7 @@ export async function internalActivations(model, inputTensor, activationsDiv) {
 
     // Calculate the sensitivity
     var t0 = performance.now();
-    const xWithCAMOverlay = cam.ClassActivationMap(model, indices[0], x);
+    const xWithCAMOverlay = heatmap.ClassActivationMap(model, indices[0], x);
     var t1 = performance.now();
     //console.log("ClassActivationMap: " + (t1 - t0) / 1000 + " sec.");
 

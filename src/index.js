@@ -10,7 +10,7 @@ import * as d3 from "d3";
 import WebCam from './webcam';
 import { deprocessImage } from "./filters";
 import * as utils from "./utils";
-import { AttributionGraph } from "./attribution-graph"
+import { ActivationGraph } from "./activation-graph"
 
 import * as imageNetClasses from "./imagenet_classes";
 import {layerChannelCounts} from './layers';
@@ -171,7 +171,7 @@ function setupListeners() {
 
     $('#graph-btn').click(async () => {
         let image = $('#image-container').get(0);
-        AttributionGraph();
+        ActivationGraph();
         setTimeout(() => {
             FeatureMaps(image);
         }, 500)

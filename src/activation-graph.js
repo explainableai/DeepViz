@@ -1,8 +1,12 @@
-import * as d3 from "d3";
+/*
+ * ActvationGraph.js
+ */
+
+ import * as d3 from "d3";
 
 import {layerChannelCounts, layerIndex, indexLayer} from './layers';
 
-export function AttributionGraph() {
+export function ActivationGraph() {
     // right
 let rightInner = d3.select('#right').append('div').attr('id', 'right-inner')
 let rightInnerDagWrapper = rightInner.append('div').attr('id', 'right-inner-dag-wrapper');
