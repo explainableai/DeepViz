@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>DeepViz - A Visual Exploration Tool</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+        crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="dagvis.css">
+</head>
+
+<body>
+    <header>
+        <section class="logo">
+            <h1 class="toolName"><strong>Deep</strong>Viz</h1>
+            <p>- A Visual Explanation Tool for Image Classifier</p>
+        </section>
+    </header>
+    <main>
+
+        <div class="">
+            <div class="container-fluid">
+
+                <div class="row">
+
+                    <div class="col-12">
+                        <div id="progress-bar-1"
+                            class="progress hide progress-bar progress-bar-striped progress-bar-animated mb-2">
+                            Loading Model
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="control-bar">
+
+                        <div class="">
+                            <select id="model-selector" class="custom-select">
+                                <option selected disabled>Select Model</option>
+                                <option>MobileNet</option>
+                                <option>VGG16</option>
+                            </select>
+                        </div>
+                        <div class="">
+                            <!--<input id="image-selector" class="form-control border-0" type="file">-->
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input id="image-selector" type="file" class="custom-file-input"
+                                        id="inputGroupFile01">
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <span class="switch switch-lg">
+                                    <input type="checkbox" class="switch" id="webcam-btn">
+                                    <label for="webcam-btn">Video On</label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="">
+                            <button id="predict-button" type="submit" class="btn btn-dark float-right">Predict</button>
+                        </div>
+                        <div class="">
+                            <button id="show-metrics" class="btn btn-default" type="submit">Metrics</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="hero-area">
+
+                    <div class="left-panel">
+                        <!--<h4 class="ml-3 sub-title">Input Image</h4>-->
+                        <img id="image-container" class="ml-3" src="" />
+
+                        <div class="video-option hide">
+                            <div class="vid-container">
+                                <div class="player">
+                                    <video id="video" autoplay playsinline muted width="320" height="240">
+                                    </video>
+                                    <button id="capture" class="btn btn-light float-left">Capture</button>
+                                </div>
+
+                                <div class="frame">
+                                    <canvas id="webcam-frame" width=320 height=240></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="right-panel">
+                        <!--<h4 class="ml-3 sub-title">Prediction</h4>-->
+                        <div class="charts">
+                            <div class="chart chart--dev">
+
+                                <ul id="prediction-list" class="chart--horiz">
+                                    <li class="chart__bar">
+                                        <div class="trans"></div>
+                                        <div class="chart__label">
+
+                                            <div class="class"></div>
+                                            <div class="pred"></div>
+
+                                        </div>
+                                    </li>
+                                    <li class="chart__bar">
+                                        <div class="trans"></div>
+                                        <div class="chart__label">
+
+                                            <div class="class"></div>
+                                            <div class="pred"></div>
+
+                                        </div>
+                                    </li>
+                                    <li class="chart__bar">
+                                        <div class="trans"></div>
+                                        <div class="chart__label">
+
+                                            <div class="class"></div>
+                                            <div class="pred"></div>
+
+                                        </div>
+                                    </li>
+                                    <li class="chart__bar">
+                                        <div class="trans"></div>
+                                        <div class="chart__label">
+
+                                            <div class="class"></div>
+                                            <div class="pred"></div>
+
+                                        </div>
+                                    </li>
+                                    <li class="chart__bar">
+                                        <div class="trans"></div>
+                                        <div class="chart__label">
+
+                                            <div class="class"></div>
+                                            <div class="pred"></div>
+
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--<hr>-->
+                <hr>
+                <div class="content">
+
+                    <!-- VIZ WORK-->
+                    <div class="col-12">
+
+                        <div class="viz">
+                            <h4>Visual Explanation</h4>
+                            <div class="btn-set">
+                                <button type="button" id="heatmap-btn" class="btn btn-primary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">Heatmap Sensitivty</button>
+                                <button type="button" id="activ-btn" class="btn btn-primary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                    Activation Output
+                                </button>
+                                <button type="button" id="graph-btn" class="btn btn-primary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                    Activation Graph
+                                </button>
+                            </div>
+
+                            <!--
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-secondary" id="activation-btn">Internal
+                                        Activations</button>
+                                    <button type="button" class="btn btn-secondary" id="heatmap-btn111">Attribution
+                                        Map</button>
+                                    <button type="button" class="btn btn-secondary" id="activ-btn111">Graph 1</button>
+                                    <button type="button" class="btn btn-secondary" id="graph-btn111">Graph 2</button>
+                                </div>
+                                -->
+                            <hr>
+                            <div class="viz-section">
+                                <div class="viz-bloc">
+                                    <h5>Sensitivity Analysis</h5>
+
+                                    <div class="loader-box hide">
+                                        <div class="loader">Loading...</div>
+                                    </div>
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                        <label class="btn btn-secondary active">
+                                            <input type="radio" name="options" id="option1" autocomplete="off" checked>
+                                            block1_conv1
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="options" id="option2" autocomplete="off">
+                                            block2:conv1
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="options" id="option3" autocomplete="off">
+                                            block2:conv2
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="options" id="option3" autocomplete="off">
+                                            block3:conv1
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="options" id="option3" autocomplete="off">
+                                            block3:conv3
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="options" id="option3" autocomplete="off">
+                                            block4:conv1
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="options" id="option3" autocomplete="off">
+                                            block4:conv3
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="options" id="option3" autocomplete="off">
+                                            block5:conv1
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="options" id="option3" autocomplete="off">
+                                            block5:conv3
+                                        </label>
+                                    </div>
+                                    <div id="cam">
+                                    </div>
+                                </div>
+                                <div class="desc">
+                                    <div class="wrap">
+                                        <div class="col-6">
+                                        </div>
+
+                                        <div class="col-6">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="viz-section">
+                                <!--<h5>Visualizing Layer Outputs (intermediate activations)</h5>-->
+                                <div id="progress-bar-2"
+                                    class="progress hide progress-bar progress-bar-striped progress-bar-animated mb-2">
+                                    Loading Activations
+                                </div>
+                                <div id="activations">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="viz-section">
+                                <main>
+                                    <h5>Activation Graph</h5>
+                                    <div id="left"></div>
+                                    <div id="right">
+
+                                    </div>
+                                </main>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <br /><br /><br /><br />
+
+                </div>
+            </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="bundle.js"></script>
+
+</body>
+
+</html>
