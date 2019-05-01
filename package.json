@@ -1,0 +1,47 @@
+{
+  "name": "msthesis-prototype-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rm dist/bundle.js",
+    "build-dev": "webpack -d --mode development",
+    "build-prod": "webpack -p --mode production",
+    "start": "webpack-dev-server --hot --mode development"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "latest",
+    "@tensorflow/tfjs-node": "latest",
+    "@tensorflow/tfjs-node-gpu": "latest",
+    "@tensorflow/tfjs-vis": "^0.5.1",
+    "babel-preset-latest": "^6.24.1",
+    "path": "^0.12.7",
+    "rollup": "^0.60.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
+    "argparse": "^1.0.10",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-runtime": "~6.23.0",
+    "babel-polyfill": "~6.26.0",
+    "browserfs": "^1.4.3",
+    "child_process": "^1.0.2",
+    "css-loader": "^2.1.0",
+    "file-loader": "^3.0.1",
+    "file-saver": "^2.0.1",
+    "fs": "0.0.1-security",
+    "jimp": "0.6.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "shelljs": "~0.8.3",
+    "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.0"
+  }
+}
