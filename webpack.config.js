@@ -7,7 +7,7 @@ const config = {
   //target: "web",
   entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'docs'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
   module: {
@@ -68,7 +68,7 @@ const config = {
     ]
   },
   devServer: {
-    contentBase: './docs'
+    contentBase: './dist'
   }
 }
 

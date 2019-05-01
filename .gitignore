@@ -1,5 +1,6 @@
 .DS_Store
-dist/
+#dist/
+tfjs-models/MobileNet/
 
 # Logs
 logs
