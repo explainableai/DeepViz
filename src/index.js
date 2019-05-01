@@ -1,5 +1,5 @@
 /** INDEX.JS **/
-
+console.log('POPER')
 import "./styles.scss";
 import "babel-polyfill";
 
@@ -10,9 +10,9 @@ import * as d3 from "d3";
 import WebCam from './webcam';
 import { deprocessImage } from "./filters";
 import * as utils from "./utils";
-import { ActivationGraph } from "./activation-graph"
+import { Graph } from "./graph"
 
-import * as imageNetClasses from "./imagenet_classes";
+import * as imageNetClasses from "../data/imagenet_classes";
 import {layerChannelCounts} from './layers';
 import { internalActivations, ClassActivationMaps } from "./main.js"
 
@@ -166,12 +166,12 @@ function setupListeners() {
 
     $('#activ-btn').click(async () => {
         let image = $('#image-container').get(0);
-        ActivationGraph(image);
+        ActivationMap(image);
     })
 
     $('#graph-btn').click(async () => {
         let image = $('#image-container').get(0);
-        ActivationGraph();
+        Graph();
         setTimeout(() => {
             FeatureMaps(image);
         }, 500)
@@ -344,7 +344,7 @@ async function FeatureMaps(image) {
     }
 }
 
-async function ActivationGraph(image) {
+async function ActivationMap(image) {
 
     const img_tensor = await getProcessedTensor(image);
     const layerNames = []
@@ -371,15 +371,10 @@ async function ActivationGraph(image) {
         
         compression = compression.reshape([compression.shape[1], compression.shape[2], compression.shape[3]])
         compression = compression.mean(-1);
-        
-        
         let imageTensor = tf.tidy(() => deprocessImage(compression));
-
         compression = compression.reshape([1, compression.shape[0], compression.shape[1], 1]);
-        
         imageTensor = utils.applyColorMap(compression); 
         imageTensor = imageTensor.reshape([imageTensor.shape[1], imageTensor.shape[2], imageTensor.shape[3]]);
-
 
         const canvas = document.createElement("canvas");
         canvas.getContext("2d");
@@ -415,7 +410,6 @@ async function ActivationGraph(image) {
 
         tf.dispose(activationTensors);
         */
-
     }
 
     tf.dispose(activations)

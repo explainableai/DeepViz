@@ -15,7 +15,7 @@
      outputDir: "activation"
  }
 
-async function internalActivations(model, inputTensor, activationsDiv) {
+export async function internalActivations(model, inputTensor, activationsDiv) {
 
     const imageHeight = model.inputs[0].shape[1];
     const imageWidth = model.inputs[0].shape[2];
@@ -30,7 +30,7 @@ async function internalActivations(model, inputTensor, activationsDiv) {
         model, layerNames, x, filters, outputDir, activationsDiv);
  }
 
-async function ClassActivationMaps(model, inputTensor, indices, camDiv) {
+export async function ClassActivationMaps(model, inputTensor, indices, camDiv) {
 
     // Compute the internal activations of the conv layers' outputs.
     const imageHeight = model.inputs[0].shape[1];
