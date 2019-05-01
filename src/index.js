@@ -199,7 +199,7 @@ async function loadModel(name) {
     console.log(name)
     progressBar1.classList.remove("hide");
     model = undefined;
-    model = await tf.loadLayersModel(`./tfjs-models/${name}/model.json`);
+    model = await tf.loadLayersModel(`./../tfjs-models/${name}/model.json`);
     progressBar1.classList.add("hide");
 }
 

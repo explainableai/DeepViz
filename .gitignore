@@ -1,6 +1,6 @@
 .DS_Store
 #dist/
-tfjs-models/MobileNet
+tfjs-models/MobileNet/
 
 # Logs
 logs
