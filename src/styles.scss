@@ -1,0 +1,514 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+$primary-color: black;
+$bg: white;
+
+body {
+  color: $primary-color;
+  background-color: $bg;
+  font-family: "Open Sans", sans-serif;
+  color: #282828;
+}
+
+header {
+  background: #304F51;
+  height: 48px;
+  padding: 30px 0;
+
+  section.logo {
+    
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    align-content: center;
+
+    h1.toolName {
+      
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 30px;
+      margin: 0 30px 0 0;
+      padding: 0;
+      float: left;
+  
+      span {
+        font-weight: bold;
+      }
+    }
+
+    p {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      font-size: 18px;
+    }
+  }
+}
+
+main {
+  background: aliceblue;
+}
+
+.layout {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+}
+
+.container-fluid {
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 100%;
+  margin: auto;
+  padding: 24px;
+}
+
+.content,
+
+.btn-set {
+  margin: 25px 0 10px 0
+}
+.viz {
+  font-size: 14px;
+  width: 85%;
+  margin: 0 auto;
+  padding: 10px 0 0 0;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 20px 0 00px 0;
+  position: relative;
+  height: 100%;
+}
+
+.wrap li {
+  padding: 0 0 10px 0;
+}
+
+.control-bar {
+  width: 80%;
+  margin: auto;
+  font-size: 14px;
+  padding: 0 30px;
+  display: flex;
+  //flex: 1 1 auto;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-evenly;
+}
+
+.hero-area {
+  width: 85%;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content:space-between;
+  padding: 40px 0 40px 0;
+  margin: auto;
+  background: #fff;
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 1px 3px 0 rgba(0, 0, 0, 0.12) !important;
+  height: 100%;
+
+  .left-panel { 
+    width: 50%;
+
+    img {
+      max-width: 75%; //80%
+    }
+  }
+  .right-panel { 
+    width: 50%; 
+  }
+  
+}
+
+.hide {
+  display: none;
+}
+
+// header
+.sub-title {
+  padding-left: 0;
+}
+
+#selected-image {
+  width: 70%;
+}
+
+/////////////////////////////
+
+.viz {
+  padding: 20px 0;
+}
+
+.viz-container {
+}
+
+.viz-section {
+  padding: 0 0 20px 0;
+  h5 {
+    padding: 0 0 20px 0;
+  }
+}
+
+#activations {
+  display: flex;
+  flex-direction: column;
+
+  .activations-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    overflow: overlay;
+
+    img {
+      margin: 5px;
+    }
+  }
+}
+
+/**** CHART *****/
+
+@mixin stagger-anim-delay($i, $initial-delay, $stagger-delay) {
+  @while $i > 0 {
+    &:nth-of-type(#{$i}) {
+      animation-delay: $initial-delay + $stagger-delay * $i;
+    }
+    $i: $i - 1;
+  }
+}
+
+.charts {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.chart {
+  margin: 30px 0 0;
+
+  &:first-child {
+    margin: 0;
+  }
+}
+
+.chart--horiz {
+  overflow: hidden;
+  list-style: none;
+  padding-left: 0;
+  margin: 0 30px 0 0;
+}
+
+//Keyframes
+@keyframes anim-lightspeed-in {
+  0% {
+    transform: translateX(-200%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.chart__bar {
+  position: relative;
+
+  width: 100%;
+
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.trans {
+  position: absolute;
+  height: 100%;
+  margin: 0 0 0 230px;
+  opacity: 0;
+  z-index: 0;
+  $border-rad: 4px;
+  background: #3cd3ad;
+
+  //background: linear-gradient(to left, #4cb8c4, #3cd3ad);
+  border-top-right-radius: $border-rad;
+  border-bottom-right-radius: $border-rad;
+
+  animation: 1s anim-lightspeed-in ease forwards;
+
+  .chart--dev & {
+    @include stagger-anim-delay(11, 0.5s, 0.2s);
+  }
+  .chart--prod & {
+    @include stagger-anim-delay(2, 3.8s, 0.2s);
+  }
+  .chart--design & {
+    @include stagger-anim-delay(3, 5s, 0.2s);
+  }
+}
+.chart__label {
+  position: absolute;
+  z-index: 1;
+  width: 75%; //80%
+  padding-left: 0;
+  margin: 0;
+  line-height: 30px;
+  color: black;
+
+  div:first-child {
+    width: 40%;
+    float: left;
+    text-align: right;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.15em;
+    letter-spacing: 1px;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  div:last-child {
+    width: 60%;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    float: right;
+  }
+}
+
+// SWITCHES
+
+// IMPORTANT: These Sass variables are defined in Bootstrap's variables.scss. You should import that file first, then remove these.
+//
+$font-size-base: 1rem;
+$font-size-lg: ($font-size-base * 1.25);
+$font-size-sm: ($font-size-base * 0.875);
+$input-height: 2.375rem;
+$input-height-sm: 1.9375rem;
+$input-height-lg: 3rem;
+$input-btn-focus-width: 0.2rem;
+$custom-control-indicator-bg: #dee2e6;
+$custom-control-indicator-disabled-bg: #e9ecef;
+$custom-control-description-disabled-color: #868e96;
+$white: white;
+$theme-colors: (
+  "primary": #08d
+);
+
+//
+// These variables can be used to customize the switch component.
+//
+$switch-height: calc(#{$input-height} * 0.8) !default;
+$switch-height-sm: calc(#{$input-height-sm} * 0.8) !default;
+$switch-height-lg: calc(#{$input-height-lg} * 0.8) !default;
+$switch-border-radius: $switch-height !default;
+$switch-bg: $custom-control-indicator-bg !default;
+$switch-checked-bg: map-get($theme-colors, "primary") !default;
+$switch-disabled-bg: $custom-control-indicator-disabled-bg !default;
+$switch-disabled-color: $custom-control-description-disabled-color !default;
+$switch-thumb-bg: $white !default;
+$switch-thumb-border-radius: 50% !default;
+$switch-thumb-padding: 2px !default;
+$switch-focus-box-shadow: 0 0 0 $input-btn-focus-width
+  rgba(map-get($theme-colors, "primary"), 0.25);
+$switch-transition: 0.2s all !default;
+
+.switch {
+  font-size: $font-size-base;
+  position: relative;
+
+  input {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    background: none;
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    padding: 0;
+
+    + label {
+      position: relative;
+      min-width: calc(#{$switch-height} * 2);
+      border-radius: $switch-border-radius;
+      height: $switch-height;
+      line-height: $switch-height;
+      display: inline-block;
+      cursor: pointer;
+      outline: none;
+      user-select: none;
+      vertical-align: middle;
+      text-indent: calc(calc(#{$switch-height} * 2) + 0.5rem);
+    }
+
+    + label::before,
+    + label::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: calc(#{$switch-height} * 2);
+      bottom: 0;
+      display: block;
+    }
+
+    + label::before {
+      right: 0;
+      background-color: $switch-bg;
+      border-radius: $switch-border-radius;
+      transition: $switch-transition;
+    }
+
+    + label::after {
+      top: $switch-thumb-padding;
+      left: $switch-thumb-padding;
+      width: calc(#{$switch-height} - calc(#{$switch-thumb-padding} * 2));
+      height: calc(#{$switch-height} - calc(#{$switch-thumb-padding} * 2));
+      border-radius: $switch-thumb-border-radius;
+      background-color: $switch-thumb-bg;
+      transition: $switch-transition;
+    }
+
+    &:checked + label::before {
+      background-color: $switch-checked-bg;
+    }
+
+    &:checked + label::after {
+      margin-left: $switch-height;
+    }
+
+    &:focus + label::before {
+      outline: none;
+      box-shadow: $switch-focus-box-shadow;
+    }
+
+    &:disabled + label {
+      color: $switch-disabled-color;
+      cursor: not-allowed;
+    }
+
+    &:disabled + label::before {
+      background-color: $switch-disabled-bg;
+    }
+  }
+
+  + .switch {
+    margin-left: 1rem;
+  }
+}
+
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
+
+.video-option {
+  .vid-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    .player {
+      margin-right: 10px;
+      #video {
+      }
+    }
+
+    .frame {
+      #canvas {
+      }
+    }
+  }
+}
+
+// LOADER //
+
+.loader-box {
+  height: 60px;
+  max-height: 60px;
+}
+
+.loader,
+.loader:before,
+.loader:after {
+  background: #1dafb8;
+  width: 1em;
+  height: 100px;
+
+  -webkit-animation: load1 1s infinite ease-in-out;
+  animation: load1 1s infinite ease-in-out;
+}
+.loader {
+
+  color: #1dafb8;
+  text-indent: -9999em;
+  margin: 0px auto;
+  position: relative;
+  font-size: 11px;
+  
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+  position: absolute;
+  top: 0;
+  content: "";
+}
+.loader:before {
+  left: -1.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.loader:after {
+  left: 1.5em;
+}
+@-webkit-keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0;
+    height: 3em;
+  }
+  40% {
+    box-shadow: 0 -2em;
+    height: 4em;
+  }
+}
+
+@keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0;
+    height: 3em;
+  }
+  40% {
+    box-shadow: 0 -2em;
+    height: 4em;
+  }
+}
