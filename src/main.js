@@ -30,7 +30,7 @@ export async function internalActivations(model, inputTensor, activationsDiv) {
         model, layerNames, x, filters, outputDir, activationsDiv);
  }
 
-export async function ClassActivationMaps(model, inputTensor, indices, camDiv) {
+export async function ClassActivationMaps(model, inputTensor, indices, id, camDiv) {
 
     // Compute the internal activations of the conv layers' outputs.
     const imageHeight = model.inputs[0].shape[1];
@@ -44,7 +44,7 @@ export async function ClassActivationMaps(model, inputTensor, indices, camDiv) {
 
     // Calculate the sensitivity
     var t0 = performance.now();
-    const xWithCAMOverlay = heatmap.ClassActivationMap(model, indices[0], x);
+    const xWithCAMOverlay = heatmap.ClassActivationMap(model, indices[0], x, id);
     var t1 = performance.now();
     //console.log("ClassActivationMap: " + (t1 - t0) / 1000 + " sec.");
 

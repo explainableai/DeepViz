@@ -10,7 +10,8 @@
 import * as tf from "@tensorflow/tfjs";
 import * as utils from "./utils";
 
-export function ClassActivationMap(model, classIndex, x, overlayFactor = 2.0) {
+export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0) {
+  console.log(id)
   // Try to locate the last conv layer of the model.
   let layerIndex = model.layers.length - 1;
   while (layerIndex >= 0) {
@@ -23,8 +24,10 @@ export function ClassActivationMap(model, classIndex, x, overlayFactor = 2.0) {
       layerIndex >= 0, `Failed to find a convolutional layer in model`);
   
   //layerIndex = 17;
+  if (id) layerIndex = id;
+  
   const lastConvLayer = model.layers[layerIndex];
-
+  console.log(model, classIndex, x, id, lastConvLayer)
   // Get "sub-model 1", which goes from the original input to the output
   // of the last convolutional layer.
   const lastConvLayerOutput = lastConvLayer.output;

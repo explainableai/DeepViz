@@ -1,5 +1,5 @@
 /** INDEX.JS **/
-console.log('POPER')
+
 import "./styles.scss";
 import "babel-polyfill";
 
@@ -25,10 +25,16 @@ const progressBar1 = document.querySelector('#progress-bar-1');
 const progressBar2 = document.querySelector('#progress-bar-2');
 const loaderBox = document.querySelector('.loader-box');
 
-let model, tensor, mediaTensor;
+let model, mediaTensor;
+
+function getTensor(media) {
+    let tensor = tf.browser.fromPixels(media);
+    tensor = tensor.resizeNearestNeighbor([224, 224]).toFloat();
+    return tensor;
+}
 
 function getProcessedTensor(media) {
-    tensor = tf.browser.fromPixels(media);
+    let tensor = tf.browser.fromPixels(media);
     tensor = tensor.resizeNearestNeighbor([224, 224]).toFloat();
 
     // More pre-processing
@@ -108,20 +114,22 @@ async function getActivations() {
 }
 
 // Generate Activation map on input image
-async function getActivationMaps() {
+async function Heatmap(id) {
     console.log('Loading heatmap..');
-
     const camDiv = document.querySelector('#cam');
 
-    const tensorData = mediaTensor || tensor;
+    let image = $('#image-container').get(0);
+    let tensor = await getTensor(image);
+
     camDiv.innerHTML = '';
-    if (model && tensorData) {
-        await ClassActivationMaps(model, tensorData, top5, camDiv);
+    if (model && tensor) {
+        await ClassActivationMaps(model, tensor, top5, id, camDiv);
         loaderBox.classList.add("hide");
     }
-    if (mediaTensor) mediaTensor.dispose();
-    if (tensor) tensor.dispose();
-    if (tensorData) tensorData.dispose();
+    
+    tensor.dispose();
+    
+   
 }
 
 // EVENT HANDLERS
@@ -160,7 +168,7 @@ function setupListeners() {
         .addEventListener("click", async function () {
             loaderBox.classList.remove("hide");
             setTimeout(() => {
-                getActivationMaps();
+                Heatmap();
             }, 500);
     });
 
@@ -186,6 +194,19 @@ function setupListeners() {
             // Draw the video frame to the canvas.
             context.drawImage(webcamElement, 0, 0, canvas.width, canvas.height);
         });
+
+    const vgg16 = document.querySelector("#vgg16-layers");
+    const vggLayers = vgg16.querySelectorAll('.layer')
+    vggLayers.forEach((radio) => {
+        radio.onchange = LayerActivation;
+    })
+        
+}
+
+function LayerActivation(e) {
+    const radio = e.target;
+    const id = radio.getAttribute('data-id');
+    Heatmap(id);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -199,7 +220,7 @@ async function loadModel(name) {
     console.log(name)
     progressBar1.classList.remove("hide");
     model = undefined;
-    model = await tf.loadLayersModel(`./../tfjs-models/${name}/model.json`);
+    model = await tf.loadLayersModel(`tfjs-models/${name}/model.json`);
     progressBar1.classList.add("hide");
 }
 

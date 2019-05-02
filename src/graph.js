@@ -87,8 +87,8 @@ let fvHorizontalSpace = 50
 
 function dagVIS() {
     
-    d3.json('./../data/ag.json').then(function (dag) {
-        //console.log(dag);
+    d3.json('ag.json').then(function (dag) {
+        console.log(dag);
 
         let tempMins = []
         let tempMaxs = []
