@@ -23,7 +23,7 @@ const webcamElement = document.getElementById('video');
 
 const progressBar1 = document.querySelector('#progress-bar-1');
 const progressBar2 = document.querySelector('#progress-bar-2');
-const loaderBox = document.querySelector('.loader-box');
+const loaderBox1 = document.querySelector('.loader-box');
 
 let model, mediaTensor;
 
@@ -114,17 +114,17 @@ async function getActivations() {
 }
 
 // Generate Activation map on input image
-async function Heatmap(id) {
+async function Heatmap(camDiv, id) {
     console.log('Loading heatmap..');
-    const camDiv = document.querySelector('#cam');
 
     let image = $('#image-container').get(0);
     let tensor = await getTensor(image);
+    let index = id || 0;
 
-    camDiv.innerHTML = '';
+    
     if (model && tensor) {
-        await ClassActivationMaps(model, tensor, top5, id, camDiv);
-        loaderBox.classList.add("hide");
+        await ClassActivationMaps(model, tensor, top5, index, camDiv);
+        camDiv.nextElementSibling.classList.add("hide");
     }
     
     tensor.dispose();
@@ -166,9 +166,12 @@ function setupListeners() {
     document
         .querySelector("#heatmap-btn")
         .addEventListener("click", async function () {
-            loaderBox.classList.remove("hide");
+            
+            const camDiv = document.querySelector('#cam');
+            camDiv.nextElementSibling.classList.remove("hide");
+            camDiv.innerHTML = '';
             setTimeout(() => {
-                Heatmap();
+                Heatmap(camDiv);
             }, 500);
     });
 
@@ -196,17 +199,22 @@ function setupListeners() {
         });
 
     const vgg16 = document.querySelector("#vgg16-layers");
-    const vggLayers = vgg16.querySelectorAll('.layer')
+    const vggLayers = vgg16.querySelectorAll('input[type="radio"]');
+    console.log(vggLayers)
     vggLayers.forEach((radio) => {
         radio.onchange = LayerActivation;
-    })
+    });
+    
         
 }
 
 function LayerActivation(e) {
     const radio = e.target;
     const id = radio.getAttribute('data-id');
-    Heatmap(id);
+
+    const camDiv = document.querySelector('#cam-layers');
+    //camDiv.innerHTML = '';
+    Heatmap(camDiv, id);
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -75,7 +75,7 @@ main {
   font-size: 14px;
   width: 85%;
   margin: 0 auto;
-  padding: 10px 0 0 0;
+  padding: 0px 0 20px 0;
 }
 
 .wrap {
@@ -146,10 +146,6 @@ main {
 }
 
 /////////////////////////////
-
-.viz {
-  padding: 20px 0;
-}
 
 .viz-container {
 }
@@ -444,7 +440,7 @@ $switch-transition: 0.2s all !default;
 
 // LOADER //
 
-.loader-box {
+.loader-box-1, loader-box-2 {
   height: 60px;
   max-height: 60px;
 }

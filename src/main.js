@@ -43,13 +43,12 @@ export async function ClassActivationMaps(model, inputTensor, indices, id, camDi
         camDiv.appendChild(container);
 
     // Calculate the sensitivity
-    var t0 = performance.now();
-    const xWithCAMOverlay = heatmap.ClassActivationMap(model, indices[0], x, id);
-    var t1 = performance.now();
+    let xWithCAMOverlay = heatmap.ClassActivationMap(model, indices[0], x, id);
     //console.log("ClassActivationMap: " + (t1 - t0) / 1000 + " sec.");
-
-    var t2 = performance.now();
+    let z = tf.tile(xWithCAMOverlay, [1, 1, 1, 1])
     await utils.writeImageTensorToFile(xWithCAMOverlay, container);
-    var t3 = performance.now();
     //console.log("writeImageTensorToFile: " + (t3 - t2) / 1000 + " sec.");
+    x.dispose()
+    xWithCAMOverlay.dispose()
+    z.dispose();
  }

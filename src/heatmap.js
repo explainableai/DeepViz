@@ -27,10 +27,9 @@ export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0
   if (id) layerIndex = id;
   
   const lastConvLayer = model.layers[layerIndex];
-  console.log(model, classIndex, x, id, lastConvLayer)
   // Get "sub-model 1", which goes from the original input to the output
   // of the last convolutional layer.
-  const lastConvLayerOutput = lastConvLayer.output;
+  const lastConvLayerOutput = model.getOutputAt(layerIndex);
   const subModel1 =
       tf.model({inputs: model.inputs, outputs: lastConvLayerOutput});
 
@@ -98,7 +97,7 @@ export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0
     console.log(dataArr.length)
     console.log(dataArr[0])
     */
-
+   
     return heatMap;
   });
 }

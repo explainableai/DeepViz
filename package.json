@@ -13,12 +13,12 @@
     "start": "webpack-dev-server --hot --mode development"
   },
   "dependencies": {
-    "@tensorflow/tfjs": "latest",
-    "@tensorflow/tfjs-node": "latest",
-    "@tensorflow/tfjs-node-gpu": "latest",
+    "@tensorflow/tfjs": "*",
+    "@tensorflow/tfjs-node": "*",
+    "@tensorflow/tfjs-node-gpu": "*",
     "@tensorflow/tfjs-vis": "^0.5.1",
     "babel-preset-latest": "^6.24.1",
-    "d3": "^5.9.1",
+    "d3": "*",
     "path": "^0.12.7",
     "rollup": "^0.60.0"
   },
