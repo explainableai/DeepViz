@@ -197,10 +197,10 @@ function setupListeners() {
             // Draw the video frame to the canvas.
             context.drawImage(webcamElement, 0, 0, canvas.width, canvas.height);
         });
-
+    
+    // Layer-level
     const vgg16 = document.querySelector("#vgg16-layers");
     const vggLayers = vgg16.querySelectorAll('input[type="radio"]');
-    console.log(vggLayers)
     vggLayers.forEach((radio) => {
         radio.onchange = LayerActivation;
     });

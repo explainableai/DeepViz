@@ -71,12 +71,6 @@ main {
 .btn-set {
   margin: 25px 0 10px 0
 }
-.viz {
-  font-size: 14px;
-  width: 85%;
-  margin: 0 auto;
-  padding: 0px 0 20px 0;
-}
 
 .wrap {
   display: flex;
@@ -147,6 +141,13 @@ main {
 
 /////////////////////////////
 
+.viz {
+  font-size: 14px;
+  width: 85%;
+  margin: 0 auto;
+  padding: 0px 0 20px 0;
+}
+
 .viz-container {
 }
 
@@ -156,6 +157,19 @@ main {
     padding: 0 0 20px 0;
   }
 }
+
+.viz-bloc {
+
+  #cam {
+    .class-activation-map {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+  #cam-layers{}
+}
+
+
 
 #activations {
   display: flex;

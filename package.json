@@ -13,18 +13,18 @@
     "start": "webpack-dev-server --hot --mode development"
   },
   "dependencies": {
-    "@tensorflow/tfjs": "*",
-    "@tensorflow/tfjs-node": "*",
-    "@tensorflow/tfjs-node-gpu": "*",
+    "@tensorflow/tfjs": "^1.1.2",
+    "@tensorflow/tfjs-node": "^1.1.2",
+    "@tensorflow/tfjs-node-gpu": "^1.1.2",
     "@tensorflow/tfjs-vis": "^0.5.1",
     "babel-preset-latest": "^6.24.1",
     "d3": "*",
     "path": "^0.12.7",
-    "rollup": "^0.60.0"
+    "rollup": "^0.60.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.3",
-    "@babel/preset-env": "^7.3.1",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
     "argparse": "^1.0.10",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-runtime": "~6.23.0",
@@ -41,8 +41,8 @@
     "shelljs": "~0.8.3",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
-    "webpack": "^4.29.5",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.0"
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1",
+    "webpack-dev-server": "^3.3.1"
   }
 }

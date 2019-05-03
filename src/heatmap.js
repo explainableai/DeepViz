@@ -29,7 +29,7 @@ export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0
   const lastConvLayer = model.layers[layerIndex];
   // Get "sub-model 1", which goes from the original input to the output
   // of the last convolutional layer.
-  const lastConvLayerOutput = model.getOutputAt(layerIndex);
+  const lastConvLayerOutput = lastConvLayer.output;
   const subModel1 =
       tf.model({inputs: model.inputs, outputs: lastConvLayerOutput});
 
