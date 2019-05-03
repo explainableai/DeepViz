@@ -46,6 +46,7 @@
                                 <option selected disabled>Select Model</option>
                                 <option>MobileNet</option>
                                 <option>VGG16</option>
+                                
                             </select>
                         </div>
                         <div class="">
@@ -166,18 +167,33 @@
                     <div class="col-12">
 
                         <div class="viz">
-                            <h4>Visual Explanation</h4>
-                            <div class="btn-set">
-                                <button type="button" id="heatmap-btn" class="btn btn-primary" data-toggle="button"
-                                    aria-pressed="false" autocomplete="off">Heatmap Sensitivty</button>
-                                <!--<button type="button" id="activ-btn" class="btn btn-primary" data-toggle="button"
-                                    aria-pressed="false" autocomplete="off">
-                                    Activation Output
-                                </button>-->
-                                <button type="button" id="graph-btn" class="btn btn-primary" data-toggle="button"
-                                    aria-pressed="false" autocomplete="off">
-                                    Activation Graph
-                                </button>
+                                <h4>Visual Explanation</h4>
+                                <div class="btn-set">
+                                    <button type="button" id="heatmap-btn" class="btn btn-primary" data-toggle="button"
+                                        aria-pressed="false" autocomplete="off">Heatmap Sensitivty</button>
+                                    <!--<button type="button" id="activ-btn" class="btn btn-primary" data-toggle="button"
+                                        aria-pressed="false" autocomplete="off">
+                                        Activation Output
+                                    </button>-->
+                                    <button type="button" id="graph-btn" class="btn btn-primary" data-toggle="button"
+                                        aria-pressed="false" autocomplete="off">
+                                        Activation Graph
+                                    </button>
+                                </div>
+                            <div class="vizwrap" style="display: flex; flex-direction: row;">
+                                    <div class="lect-bloc" style="width: 60%;">
+                                        <h5>Sensitivity Analysis</h5>
+                                        <div id="cam">
+                                        </div>
+                                        <div class="loader-box-1 hide">
+                                        <div class="loader">Loading...</div>
+                                    </div>
+                                    </div>
+                                    <div class="right-bloc" style="width: 40%;">
+                                        <h5>What is DeepViz?</h5>
+                                        <p>DeepViz is an interactive exploration tool to interpret a visual classification task that shows why the predicted label is appropriate to the image. It uses image localization to show which region of the image attributed most to the classification decision.</p>
+                                        
+                                    </div>
                             </div>
 
                             <!--
@@ -193,12 +209,7 @@
                             <hr>
                             <div class="viz-section">
                                 <div class="viz-bloc">
-                                    <h5>Sensitivity Analysis</h5>
-                                    <div id="cam">
-                                    </div>
-                                    <div class="loader-box-1 hide">
-                                            <div class="loader">Loading...</div>
-                                    </div>
+                                    
                                     <h6>Model Layers</h6>
                                     <div id="vgg16-layers" class="btn-group btn-group-toggle" data-toggle="buttons">
                                         <label class="btn btn-secondary active">
@@ -266,7 +277,9 @@
                             <hr>
                             <div class="viz-section">
                                 <main>
+                                    
                                     <h5>Activation Graph</h5>
+                                    <p>Activaiton graph shows how the network builds up its internal representation</p>
                                     <div id="left"></div>
                                     <div id="right">
 

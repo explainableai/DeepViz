@@ -11,7 +11,7 @@ import * as tf from "@tensorflow/tfjs";
 import * as utils from "./utils";
 
 export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0) {
-  console.log(id)
+
   // Try to locate the last conv layer of the model.
   let layerIndex = model.layers.length - 1;
   while (layerIndex >= 0) {

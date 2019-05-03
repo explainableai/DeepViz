@@ -141,6 +141,21 @@ main {
 
 /////////////////////////////
 
+.vizwrap {
+  display: flex;
+  flex-direction: row;  
+}
+
+.vizwrap .left-bloc {
+  width: 60%;
+}
+
+.vizwrap .right-bloc {
+  width: 40%;
+  
+}
+
+
 .viz {
   font-size: 14px;
   width: 85%;
