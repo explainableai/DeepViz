@@ -347,8 +347,14 @@ async function FeatureMaps(image) {
             const container = d3.select(this).node();
             var xhtmlNS = "http://www.w3.org/1999/xhtml";
             var context = container.getElementsByTagNameNS(xhtmlNS,'canvas')[0].getContext('2d');
-            context.fillStyle = 'rgba(0,200,0,0.7)';
-            context.fillRect(0,0,100,75);
+            //context.fillStyle = 'rgba(0,200,0,0.7)';
+            //context.fillRect(0,0,100,75);
+
+            context.beginPath();
+            //ctx.arc(x, y, radius, startAngle, endAngle [, anticlockwise]);
+            context.arc(50, 50, 50, 0, 2 * Math.PI);
+            context.fillStyle = 'green';
+            context.fill();
             
             let imageTensor = tf.tidy(() => deprocessImage(activationTensors[j]));
             imageTensor = utils.applyColorMap(imageTensor);

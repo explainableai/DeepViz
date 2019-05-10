@@ -157,7 +157,7 @@ function dagVIS() {
                 .attr('y', 0)
                 .attr('width', d => fvScale(d.count))
                 .attr('height', d => fvScale(d.count))
-                .attr('fill', 'red')
+                .attr('fill', 'white')
                 /*
                 .attr('xlink:href', d => {
 
