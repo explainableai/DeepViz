@@ -1,7 +1,7 @@
 .DS_Store
 #dist/
-tfjs-models/MobileNet/
-tfjs-models/VGG19/
+dist/tfjs-models/MobileNet/
+dist/tfjs-models/VGG19/
 
 # Logs
 logs
