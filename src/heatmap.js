@@ -27,6 +27,7 @@ export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0
   if (id) layerIndex = id;
   
   const lastConvLayer = model.layers[layerIndex];
+  
   // Get "sub-model 1", which goes from the original input to the output
   // of the last convolutional layer.
   const lastConvLayerOutput = lastConvLayer.output;
