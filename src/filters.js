@@ -2,7 +2,7 @@
  * Algorithms for analyzing and visualizing the convolutional filters
  * internal to a convnet.
  * 
- * 1. Retrieving internal activations of a convnet.
+ * Retrieving internal activations of a convnet.
  * See function `writeInternalActivationAndGetOutput()`.
  **/
 

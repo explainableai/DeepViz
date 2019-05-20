@@ -1,4 +1,7 @@
-/** INDEX.JS **/
+/*
+ * Index.js
+ */
+
 
 import "./styles.scss";
 import "babel-polyfill";
