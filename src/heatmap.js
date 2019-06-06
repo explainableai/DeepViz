@@ -1,5 +1,5 @@
 /*
- * Calculate class activation map (CAM) and overlay a heatmap on the input image. 
+ * Calculate class activation map (CAM) and overlay a heatmap on the input image.
  *
  * This function finds the last convolutional layer, get its
  * output (activation) under the input image, weights its filters by the
@@ -10,33 +10,42 @@
 import * as tf from "@tensorflow/tfjs";
 import * as utils from "./utils";
 
-export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0) {
-
+export function ClassActivationMap(
+  model,
+  classIndex,
+  x,
+  id,
+  overlayFactor = 2.0
+) {
   // Try to locate the last conv layer of the model.
   let layerIndex = model.layers.length - 1;
   while (layerIndex >= 0) {
-    if (model.layers[layerIndex].getClassName().startsWith('Conv')) {
+    if (model.layers[layerIndex].getClassName().startsWith("Conv")) {
       break;
     }
     layerIndex--;
   }
   tf.util.assert(
-      layerIndex >= 0, `Failed to find a convolutional layer in model`);
-  
+    layerIndex >= 0,
+    `Failed to find a convolutional layer in model`
+  );
+
   //layerIndex = 17;
   if (id) layerIndex = id;
-  
+
   const lastConvLayer = model.layers[layerIndex];
-  
+
   // Get "sub-model 1", which goes from the original input to the output
   // of the last convolutional layer.
   const lastConvLayerOutput = lastConvLayer.output;
-  const subModel1 =
-      tf.model({inputs: model.inputs, outputs: lastConvLayerOutput});
+  const subModel1 = tf.model({
+    inputs: model.inputs,
+    outputs: lastConvLayerOutput
+  });
 
   // Get "sub-model 2", which goes from the output of the last convolutional
   // layer to the original output.
-  const newInput = tf.input({shape: lastConvLayerOutput.shape.slice(1)});
+  const newInput = tf.input({ shape: lastConvLayerOutput.shape.slice(1) });
   layerIndex++;
   let y = newInput;
 
@@ -44,15 +53,15 @@ export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0
     y = model.layers[layerIndex++].apply(y);
   }
 
-  const subModel2 = tf.model({inputs: newInput, outputs: y});
+  const subModel2 = tf.model({ inputs: newInput, outputs: y });
 
   return tf.tidy(() => {
     // This function runs sub-model 2 and extracts the slice of the probability
     // output that corresponds to the desired class.
-    const convOutput2ClassOutput = (input) =>
-        subModel2.apply(input, {training: true}).gather([classIndex], 1);
-        //input.gather([classIndex], 1);
-        
+    const convOutput2ClassOutput = input =>
+      subModel2.apply(input, { training: true }).gather([classIndex], 1);
+    //input.gather([classIndex], 1);
+
     // This is the gradient function of the output corresponding to the desired
     // class with respect to its input (i.e., the output of the last
     // convolutional layer of the original model).
@@ -69,8 +78,9 @@ export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0
     const pooledGradValues = tf.mean(gradValues, [0, 1, 2]);
     // Scale the convlutional layer's output by the pooled gradients, using
     // broadcasting.
-    const scaledConvOutputValues =
-        lastConvLayerOutputValues.mul(pooledGradValues);
+    const scaledConvOutputValues = lastConvLayerOutputValues.mul(
+      pooledGradValues
+    );
 
     // Create heat map by averaging and collapsing over all filters.
     let heatMap = scaledConvOutputValues.mean(-1);
@@ -98,7 +108,7 @@ export function ClassActivationMap(model, classIndex, x, id, overlayFactor = 2.0
     console.log(dataArr.length)
     console.log(dataArr[0])
     */
-   
+
     return heatMap;
   });
 }
