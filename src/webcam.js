@@ -1,9 +1,12 @@
+/* Webcam */
+
 class WebCam {
   constructor() {}
 
   async setupWebcam(webcamElement) {
     var constraints = { audio: true, video: true };
     let mediaStream = null;
+
     try {
       mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
       /* use the stream */
