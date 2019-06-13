@@ -1,5 +1,5 @@
 /*
- * Model Layers
+ * VGG16 Model Layers
  */
 
 export const layerChannelCounts = {
