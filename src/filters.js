@@ -51,9 +51,8 @@ export async function writeInternalActivationAndGetOutput(
           filePaths.push(outputFilePath);
           utils.writeImageTensorToFile(imageTensor, outputFilePath, container);
           imageTensorShape = imageTensor.shape;
-
-          
         }
+
         layerName2FilePaths[layerName] = filePaths;
         layerName2ImageDims[layerName] = imageTensorShape.slice(1, 3);
         tf.dispose(activationTensors);
@@ -86,4 +85,5 @@ export function deprocessImage(x) {
       x = x.mul(255);
       return tf.clipByValue(x, 0, 255).asType('int32');
     });
+    
   }
