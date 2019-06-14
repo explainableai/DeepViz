@@ -1,5 +1,6 @@
 /*
  * ActvationGraph.js
+ * Generate Activation Graph
  */
 
  import * as d3 from "d3";
