@@ -1,6 +1,6 @@
 /*
  * ActvationGraph.js
- * Generate Activation Graph
+ * Generate Activation Graph to display channel per layers
  */
 
  import * as d3 from "d3";
