@@ -1,7 +1,7 @@
 {
   "name": "DeepViz.0.0.1",
   "version": "1.0.0",
-  "description": "",
+  "description": "An interactive visualization tool",
   "main": "index.js",
   "keywords": [],
   "author": "",
