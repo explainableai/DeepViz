@@ -456,6 +456,7 @@ async function ActivationMap(image) {
 
     imageTensor.dispose();
 
+    // TODO
     /*
         // FULL CHANNELS
         const activationTensors = tf.split(activations[i], activations[i].shape[activations[i].shape.length - 1], -1);
