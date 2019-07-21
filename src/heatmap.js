@@ -101,14 +101,7 @@ export function ClassActivationMap(
     // To form the final output, overlay the color heat map on the input image.
     heatMap = heatMap.mul(overlayFactor).add(x.div(255));
     heatMap = heatMap.div(heatMap.max()).mul(255);
-
-    /*
-    console.log(heatMap.shape, heatMap.rank);
-    let dataArr = heatMap.arraySync()[0];
-    console.log(dataArr.length)
-    console.log(dataArr[0])
-    */
-
+    
     return heatMap;
   });
 }
