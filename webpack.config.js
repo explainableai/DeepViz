@@ -1,4 +1,8 @@
-const webpack = require('webpack');
+/*
+ * CONFIG
+ */
+
+ const webpack = require('webpack');
 const path = require('path');
 
 var browserfs = require('browserfs');
