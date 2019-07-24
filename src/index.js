@@ -31,6 +31,10 @@ let model, mediaTensor;
 let top5, IMAGENET_CLASSES;
 IMAGENET_CLASSES = imageNetClasses.IMAGENET_CLASSES;
 
+class DeepVizPro {
+  
+}
+
 function getTensor(media) {
   let tensor = tf.browser.fromPixels(media);
   tensor = tensor.resizeNearestNeighbor([224, 224]).toFloat();
