@@ -28,6 +28,8 @@ const progressBar2 = document.querySelector("#progress-bar-2");
 const loaderBox1 = document.querySelector(".loader-box");
 
 let model, mediaTensor;
+let top5, IMAGENET_CLASSES;
+IMAGENET_CLASSES = imageNetClasses.IMAGENET_CLASSES;
 
 function getTensor(media) {
   let tensor = tf.browser.fromPixels(media);
@@ -76,9 +78,6 @@ function getProcessedTensor(media) {
 
   return processedTensor;
 }
-
-let top5, IMAGENET_CLASSES;
-IMAGENET_CLASSES = imageNetClasses.IMAGENET_CLASSES;
 
 function showPredictions(predictions) {
   top5 = Array.from(predictions)
