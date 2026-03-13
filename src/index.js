@@ -16,7 +16,7 @@ import { Graph } from "./graph";
 
 import * as imageNetClasses from "../data/imagenet_classes";
 import { layerChannelCounts } from "./layers";
-import { internalActivations, ClassActivationMaps } from "./main.js";
+import { ClassActivationMaps } from "./main.js";
 
 const imageElem = document.querySelector("#image-container");
 const videoElem = document.querySelector(".video-option");
@@ -113,18 +113,6 @@ function showPredictions(predictions) {
   }
 }
 
-// Generate Internal Activations
-async function getActivations() {
-  console.log("Loading activations..");
-  const activationsDiv = document.querySelector("#activations");
-  progressBar2.classList.remove("hide");
-  activationsDiv.innerHTML = "";
-  if (model && tensor) {
-    //await internalActivations(model, tensor, activationsDiv);
-    //progressBar2.classList.add("hide");
-  }
-}
-
 // Generate Activation map on input image
 async function Heatmap(camDiv, id) {
   console.log("Loading heatmap..");
@@ -164,10 +152,6 @@ function setupListeners() {
   });
 
   document.querySelector("#show-metrics").addEventListener("click", showModel);
-
-  //document
-  //  .querySelector("#activation-btn")
-  //.addEventListener("click", getActivations);
 
   document
     .querySelector("#heatmap-btn")
