@@ -108,8 +108,8 @@ function showPredictions(predictions) {
       "style",
       "width: " + Math.round(prob * 100).toString() + "%"
     );
-    text[0].innerHTML = top5[i].className.split(",")[0];
-    text[1].innerHTML = Math.floor(prob * 100) / 100;
+    text[0].innerText = top5[i].className.split(",")[0];
+    text[1].innerText = Math.floor(prob * 100) / 100;
   }
 }
 
@@ -273,8 +273,8 @@ async function testVis() {
 
   const canvas = document.createElement("canvas");
   canvas.getContext("2d");
-  canvas.width = origTensor[0];
-  canvas.height = origTensor[1];
+  canvas.width = origTensor.shape[1];
+  canvas.height = origTensor.shape[0];
   canvas.style = "margin: 4px;";
   await tf.browser.toPixels(origTensor, canvas);
   drawArea.appendChild(canvas);
@@ -282,7 +282,7 @@ async function testVis() {
 
 async function AttributionMatrix(img_tensor) {
   const layerNames = [];
-  model.layers.map(layerName => {
+  model.layers.forEach(layerName => {
     if (layerName.name.startsWith("block", 0)) layerNames.push(layerName.name);
   });
 
@@ -342,7 +342,8 @@ async function FeatureMaps(image) {
       activations[i].shape[activations[i].shape.length - 1],
       -1
     );
-    dagG.selectAll(".fv-ch-" + layerName).each(async function(d, j) {
+    const promises = [];
+    dagG.selectAll(".fv-ch-" + layerName).each(function(d, j) {
       const container = d3.select(this).node();
       var xhtmlNS = "http://www.w3.org/1999/xhtml";
       var context = container
@@ -357,30 +358,30 @@ async function FeatureMaps(image) {
       context.fillStyle = "green";
       context.fill();
 
-      let imageTensor = tf.tidy(() => deprocessImage(activationTensors[j]));
-      imageTensor = utils.applyColorMap(imageTensor);
-      imageTensor = imageTensor.reshape([
-        imageTensor.shape[1],
-        imageTensor.shape[2],
-        imageTensor.shape[3]
-      ]);
+      let imageTensor = tf.tidy(() => {
+        let t = deprocessImage(activationTensors[j]);
+        t = utils.applyColorMap(t);
+        return t.reshape([
+          t.shape[1],
+          t.shape[2],
+          t.shape[3]
+        ]);
+      });
 
       const canvas = document.createElement("canvas");
       canvas.getContext("2d");
-      canvas.width = imageTensor[0];
-      canvas.height = imageTensor[1];
-      await tf.browser.toPixels(imageTensor, canvas);
-
-      //container.append(canvas);
-      //grab the context from your destination canvas
-      //var destCtx = destinationCanvas.getContext('2d');
-
-      //call its drawImage() function passing it the source canvas directly
-      context.drawImage(canvas, 0, 0);
-
-      imageTensor.dispose();
+      canvas.width = imageTensor.shape[1];
+      canvas.height = imageTensor.shape[0];
+      promises.push(
+        tf.browser.toPixels(imageTensor, canvas).then(() => {
+          //call its drawImage() function passing it the source canvas directly
+          context.drawImage(canvas, 0, 0);
+          imageTensor.dispose();
+        })
+      );
     });
 
+    await Promise.all(promises);
     tf.dispose(activationTensors);
   }
 }
@@ -388,7 +389,7 @@ async function FeatureMaps(image) {
 async function ActivationMap(image) {
   const img_tensor = await getProcessedTensor(image);
   const layerNames = [];
-  model.layers.map(layerName => {
+  model.layers.forEach(layerName => {
     if (layerName.name.startsWith("block", 0)) layerNames.push(layerName.name);
   });
 
@@ -408,40 +409,46 @@ async function ActivationMap(image) {
   const drawArea = surface.drawArea;
 
   // LAYER ACTIVATION FLATTENED
+  const promises = [];
   for (let i = 0; i < activations.length - 1; ++i) {
     const layerName = layerNames[i];
 
-    let compression = activations[i];
+    let imageTensor = tf.tidy(() => {
+      let compression = activations[i];
 
-    compression = compression.reshape([
-      compression.shape[1],
-      compression.shape[2],
-      compression.shape[3]
-    ]);
-    compression = compression.mean(-1);
-    let imageTensor = tf.tidy(() => deprocessImage(compression));
-    compression = compression.reshape([
-      1,
-      compression.shape[0],
-      compression.shape[1],
-      1
-    ]);
-    imageTensor = utils.applyColorMap(compression);
-    imageTensor = imageTensor.reshape([
-      imageTensor.shape[1],
-      imageTensor.shape[2],
-      imageTensor.shape[3]
-    ]);
+      compression = compression.reshape([
+        compression.shape[1],
+        compression.shape[2],
+        compression.shape[3]
+      ]);
+      compression = compression.mean(-1);
+      let imgT = deprocessImage(compression);
+      compression = compression.reshape([
+        1,
+        compression.shape[0],
+        compression.shape[1],
+        1
+      ]);
+      let colorMapT = utils.applyColorMap(compression);
+      return colorMapT.reshape([
+        colorMapT.shape[1],
+        colorMapT.shape[2],
+        colorMapT.shape[3]
+      ]);
+    });
 
     const canvas = document.createElement("canvas");
     canvas.getContext("2d");
-    canvas.width = imageTensor[0];
-    canvas.height = imageTensor[1];
+    canvas.width = imageTensor.shape[1];
+    canvas.height = imageTensor.shape[0];
     canvas.style = "margin: 2px;";
-    await tf.browser.toPixels(imageTensor, canvas);
-    drawArea.appendChild(canvas);
 
-    imageTensor.dispose();
+    promises.push(
+      tf.browser.toPixels(imageTensor, canvas).then(() => {
+        drawArea.appendChild(canvas);
+        imageTensor.dispose();
+      })
+    );
 
     // TODO
     /*

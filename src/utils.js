@@ -5,10 +5,14 @@
 import * as jimp from 'jimp';
 import * as tf from '@tensorflow/tfjs';
 
-var fs = require('fs');
-const Jimp = require('jimp/browser/lib/jimp');
+let fs;
+let Jimp;
 
-BrowserFS.install(window);
+if (typeof window !== 'undefined') {
+  fs = require('fs');
+  Jimp = require('jimp/browser/lib/jimp');
+
+  BrowserFS.install(window);
   // Configures BrowserFS to use the LocalStorage file system.
   BrowserFS.configure({
     fs: "LocalStorage"
@@ -19,6 +23,7 @@ BrowserFS.install(window);
     }
     // Otherwise, BrowserFS is ready-to-use!
   });
+}
 
 /**
  * Read an image file as a TensorFlow.js tensor.
@@ -32,14 +37,15 @@ export async function readImageTensorFromFile(filePath, height, width) {
         } else {
           const h = image.bitmap.height;
           const w = image.bitmap.width;
-          const buffer = tf.buffer([1, h, w, 3], 'float32');
+          const buffer = new Float32Array(h * w * 3);
           image.scan(0, 0, w, h, function(x, y, index) {
-            buffer.set(image.bitmap.data[index], 0, y, x, 0);
-            buffer.set(image.bitmap.data[index + 1], 0, y, x, 1);
-            buffer.set(image.bitmap.data[index + 2], 0, y, x, 2);
+            const bufIndex = (y * w + x) * 3;
+            buffer[bufIndex] = image.bitmap.data[index];
+            buffer[bufIndex + 1] = image.bitmap.data[index + 1];
+            buffer[bufIndex + 2] = image.bitmap.data[index + 2];
           });
           resolve(tf.tidy(
-              () => tf.image.resizeBilinear(buffer.toTensor(), [height, width])));
+              () => tf.image.resizeBilinear(tf.tensor4d(buffer, [1, h, w, 3]), [height, width])));
         }
       });
     });
@@ -90,7 +96,7 @@ export async function writeImageTensorToFile(imageTensor, container) {
 // This is used to convert a 1-channel (grayscale) image into a color
 // (RGB) one. The color map is based on the output of the "parula" colormap
 // command in MATLAB.
-const RGB_COLORMAP = [
+export const RGB_COLORMAP = [
   0.2422,   0.1504,  0.6603,   0.25039,   0.165,    0.70761,  0.25777,
   0.18178,  0.75114, 0.26473,  0.19776,   0.79521,  0.27065,  0.21468,
   0.83637,  0.27511, 0.23424,  0.87099,   0.2783,   0.25587,  0.89907,
@@ -125,7 +131,7 @@ const RGB_COLORMAP = [
  * Convert an input monocolor image to color by applying a color map.
  * 
  */
-export function applyColorMap(x) {
+export function applyColorMap(x, colormap = RGB_COLORMAP) {
   tf.util.assert(
       x.rank === 4, `Expected rank-4 tensor input, got rank ${x.rank}`);
   tf.util.assert(
@@ -144,18 +150,19 @@ export function applyColorMap(x) {
 
     const h = x.shape[1];
     const w = x.shape[2];
-    const buffer = tf.buffer([1, h, w, 3]);
+    const buffer = new Float32Array(h * w * 3);
 
-    const colorMapSize = RGB_COLORMAP.length / 3;
+    const colorMapSize = colormap.length / 3;
     for (let i = 0; i < h; ++i) {
       for (let j = 0; j < w; ++j) {
         const pixelValue = xNormData[i * w + j];
-        const row = Math.floor(pixelValue * colorMapSize);
-        buffer.set(RGB_COLORMAP[3 * row], 0, i, j, 0);
-        buffer.set(RGB_COLORMAP[3 * row + 1], 0, i, j, 1);
-        buffer.set(RGB_COLORMAP[3 * row + 2], 0, i, j, 2);
+        const row = Math.min(Math.floor(pixelValue * colorMapSize), colorMapSize - 1);
+        const bufIndex = (i * w + j) * 3;
+        buffer[bufIndex] = colormap[3 * row];
+        buffer[bufIndex + 1] = colormap[3 * row + 1];
+        buffer[bufIndex + 2] = colormap[3 * row + 2];
       }
     }
-    return buffer.toTensor();
+    return tf.tensor4d(buffer, [1, h, w, 3]);
   });
 }
